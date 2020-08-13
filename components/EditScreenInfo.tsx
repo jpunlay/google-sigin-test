@@ -1,20 +1,70 @@
 import * as WebBrowser from 'expo-web-browser';
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { StyleSheet, TouchableOpacity } from 'react-native';
 
 import Colors from '../constants/Colors';
 import { MonoText } from './StyledText';
 import { Text, View } from './Themed';
 
+import * as AppAuth from 'expo-app-auth';
+import * as Google from 'expo-google-app-auth';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+  } from 'react-native-google-signin';
+
+
+
 export default function EditScreenInfo({ path }: { path: string }) {
+  // When configured correctly, URLSchemes should contain your REVERSED_CLIENT_ID
+const { URLSchemes } = AppAuth;
+const [user, setUser] = useState(null);
+
+useEffect(() => {
+ 
+  initAsync();
+}, []);
+
+// const initAsync = async () => {
+//   await GoogleSignIn.initAsync({
+//     // You may ommit the clientId when the firebase `googleServicesFile` is configured
+//     clientId: '661002849298-2pq4euadij2h4a0r8qej2aq5lijvklpc.apps.googleusercontent.com',
+//   });
+//   _syncUserWithStateAsync();
+// };
+
+const initAsync = async () => {
+  try {
+    const result = await Google.logInAsync({
+      // androidClientId: "Your Client ID",
+      iosClientId: '',
+      scopes: ["profile", "email"]
+
+    })
+    if (result.type === "success") {
+      // const credential = firebase.auth.GoogleAuthProvider.credential(result.idToken, result.accessToken);
+      // firebase.auth().signInAndRetrieveDataWithCredential(credential).then(function (result) {
+        console.log(result);
+      // });
+      // this.props.navigation.navigate('Where you want to go');
+    } else {
+      console.log("cancelled")
+    }
+  } catch (e) {
+    console.log("error", e)
+  }
+}
+
   return (
     <View>
       <View style={styles.getStartedContainer}>
+      {/* <Text onPress={onPress}>Toggle Auth</Text> */}
         <Text
           style={styles.getStartedText}
           lightColor="rgba(0,0,0,0.8)"
           darkColor="rgba(255,255,255,0.8)">
-          Open up the code for this screen:
+          Open up the code for this screen: yoo
         </Text>
 
         <View
@@ -42,6 +92,8 @@ export default function EditScreenInfo({ path }: { path: string }) {
     </View>
   );
 }
+
+
 
 function handleHelpPress() {
   WebBrowser.openBrowserAsync(
