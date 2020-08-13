@@ -19,8 +19,7 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true,
-      "bundleIdentifier": "com.googlesignintest"
+      "supportsTablet": true
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
